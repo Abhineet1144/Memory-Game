@@ -1,6 +1,7 @@
+#importing random
 import random
-import os
 
+#Difficulty selection
 avdif = ['easy', 'medium', 'hard']
 cdif = input("Choose difficulty: ")
 cdif = cdif.lower()
@@ -10,8 +11,7 @@ while cdif not in avdif:
     if cdif in avdif:
         break
 
-os.system('cls')
-
+#Variable declaration
 usdchr = []
 rndchr = ''
 tble = []
@@ -21,6 +21,7 @@ unusble = []
 cntprsnt = ''
 mvs = 0
 
+#creating a list of charecters in random order
 if cdif == 'easy':
     el = [chr(i) for i in range(65, 65+8)]
     for j in range(4):
@@ -58,6 +59,8 @@ else:
             row.append(rndchr)
         tble.extend(row)
     rl = 8
+
+#creating a table with respect to the chosen difficulty
 tblefmt = '    '
 for i in range(1, rl + 1):
     tblefmt += str(i) + '     '
@@ -69,11 +72,10 @@ for i in range(rl):
     tblefmt += '\n'
 
 vsbllst = [' '] * rl ** 2
-exec('cmpttble = tblefmt.format(' + str(vsbllst)[1:-1] + ')')
-print(cmpttble)
 
-
+#loop that runs till the board is completed
 while True:
+    #getting input from user about which tile to uncover
     print("\nFor eg: you can use A1 to uncover the tile in first row first column...")
     opn = input("Enter the tile to uncover: ")
     while len(opn) != 2:
@@ -92,27 +94,27 @@ while True:
     if nm > rl ** 2:
         print("Invalid input.\n")
         continue
-            
-    if mvs % 2 == 0:
-        if nm in unusble:
-            print("This tile is completed\n")
-            continue
 
+    #checking if tile is already completed
+    if nm in unusble:
+        print("This tile is completed\n")
+        continue
+    
+    #fetching the charecters in the tile selected
+    if mvs % 2 == 0:
         vsbllst[nm] = tble[nm]
         exec('cmpttble = tblefmt.format(' + str(vsbllst)[1:-1] + ')')
         cntprsnt = tble[nm]
         nm2 = nm
 
     else:
-        if nm in unusble:
-            print("This tile is completed\n")
-            continue
-        
         if nm == nm2:
             print("Invalid input\n")
+            continue
 
         vsbllst[nm] = tble[nm]
 
+        #checking if a tile was completed
         if tble[nm] == cntprsnt:
             print("You guessed/found it!\n")
             unusble.extend([nm, nm2])
@@ -125,16 +127,20 @@ while True:
                 vsbllst[i] = ' ' 
         exec('cmpttble = tblefmt.format(' + str(vsbllst)[1:-1] + ')')
 
+        #Ensure that user does not see the previously opened tiles
         cwkencwkj = input("Press ENTER to continue: ")
         print('\n' * 200)
 
-    #os.system('cls')
+    #display the table
     print(cmpttble)
     
-
+    #incrementing moves after every iteration
     mvs += 1 
+
+    #checking if the table is completed
     if vsbllst.count("✓") == rl ** 2:
         break
 
+#displaying number of moves taken to complete and a completion message
 print("Good Job!!")
 print("You finished the board in", mvs, 'moves!')
